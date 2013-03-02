@@ -1,0 +1,12 @@
+Plagiator
+
+Projekt ma zawierać dwie główne opcje. Pierwszą jest stworzenie możliwości wykazania plagiatu w pracach dyplomowych. Drugą jest szukanie czy nie został użyty czyjś kod w innym programie tworzonym do pracy magisterskiej. 
+
+I. Wykazanie plagiatu pracy dyplomowej
+Podczas sprawdzania pracy pomijamy sprawdzanie cytatów, źródeł oraz obrazków. Prace będą dodawane w postaci plików .doc i .docx. 
+
+II. Wykazanie plagiatu kodu aplikacji
+Źródła aplikacji będą sprawdzane dla 2 języków programowania: PHP oraz Java. Będzie trzeba wziąć pod uwagę nazewnictwo zmiennych oraz możliwość zmiany nazwy zmiennych w plagiacie. Kolejnymi rzeczami, na które będzie trzeba zwrócić uwagę to jak zagnieżdżane są klasy, jak jest liczba funkcji. Czy w podobny sposób te funkcje są tworzone oraz wywoływane. W poszukiwaniu plagiatu pomijamy elementy algorytmów, które muszą być użyte w pracy oraz są to algorytmy powszechnie znane
+
+III. Ogólne
+Kwestia logowania ma być rozwiązana w taki sposób, że ma być tylko jeden użytkownik, który może dodawać nowe prace, sprawdzać ich podobieństwo oraz oglądać statystyki. Plagiatem nazywamy pracę, która jest przynajmniej w 20% zgodna z inną pracą . Na początku w repozytorium pojawi się około 30 prac. Z tych prac będziemy wybierać część, przyjmijmy startowo 10 i będziemy je porównać ze sobą. Potem będzie miał użytkownik możliwość dodawania kolejnych prac (również nowych) i sprawdzania je z poprzednimi, Każda praca musi być sprawdzona z każdą inną. Wygląd aplikacji musi być tak skonstruowany, żeby można zobaczyć podobieństwo prac w procentach i umożliwić wybór najbardziej podobnych (przekraczających prawne 20%). Po wyborze danych prac powinno pokazać się w oknie , w których miejscach został popełniony plagiat.

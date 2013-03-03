@@ -22,10 +22,18 @@ public class MainFrameFactory {
     @PostConstruct
     public void init() {
         createMainFrame(windowName);
+        try {
+            UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException |
+                InstantiationException |
+                IllegalAccessException |
+                UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
+        }
     }
 
     private JFrame createMainFrame(String name) {
-        JFrame.setDefaultLookAndFeelDecorated(true);
         JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainFrame = frame;

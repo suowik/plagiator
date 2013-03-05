@@ -6,6 +6,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.mainwindow.MainFrameFactory;
 
+import javax.jcr.RepositoryException;
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,7 +21,7 @@ public class Starter {
     @Autowired
     private MainFrameFactory mainFrameFactory;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws RepositoryException {
         ApplicationContext context =
                 new ClassPathXmlApplicationContext("context.xml");
 

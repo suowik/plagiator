@@ -10,5 +10,6 @@
     <context:annotation-config/>
     <context:component-scan base-package="pl.edu.pk.zpi.plagiator"/>
     <import resource="commonContext.xml"/>
+    <import resource="daoContext.xml"/>
     <import resource="guiContext.xml"/>
 </beans>

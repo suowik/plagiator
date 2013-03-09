@@ -10,3 +10,11 @@ II. Wykazanie plagiatu kodu aplikacji
 
 III. Ogólne
 Kwestia logowania ma być rozwiązana w taki sposób, że ma być tylko jeden użytkownik, który może dodawać nowe prace, sprawdzać ich podobieństwo oraz oglądać statystyki. Plagiatem nazywamy pracę, która jest przynajmniej w 20% zgodna z inną pracą . Na początku w repozytorium pojawi się około 30 prac. Z tych prac będziemy wybierać część, przyjmijmy startowo 10 i będziemy je porównać ze sobą. Potem będzie miał użytkownik możliwość dodawania kolejnych prac (również nowych) i sprawdzania je z poprzednimi, Każda praca musi być sprawdzona z każdą inną. Wygląd aplikacji musi być tak skonstruowany, żeby można zobaczyć podobieństwo prac w procentach i umożliwić wybór najbardziej podobnych (przekraczających prawne 20%). Po wyborze danych prac powinno pokazać się w oknie , w których miejscach został popełniony plagiat.
+
+
+Ad. I
+Na ostatnich zajęciach poruszyłem temat preprocessingu tekstu przed jego przepuszczeniem przez algorytmy. Główne zadania:
+- usunięcie komentarzy i znaków przestankowych, nawiasów
+- usuwa się też słowa, które często się powtarzają, a nie
+zmieniają znaczenia tekstu. W szczególności usuwa się krótkie wyrazy (się, a, w)
+- zmiana wszystkich wyrazów na ich formę podstawową (ale z tego rezygnujemy, bo nie ma czasu)

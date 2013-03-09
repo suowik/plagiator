@@ -18,3 +18,5 @@ Na ostatnich zajęciach poruszyłem temat preprocessingu tekstu przed jego przep
 - usuwa się też słowa, które często się powtarzają, a nie
 zmieniają znaczenia tekstu. W szczególności usuwa się krótkie wyrazy (się, a, w)
 - zmiana wszystkich wyrazów na ich formę podstawową (ale z tego rezygnujemy, bo nie ma czasu)
+
+Może to si przyda: http://pl.scribd.com/doc/119166607/Magisterka-Antyplagiat-Lukasz-Poczatek

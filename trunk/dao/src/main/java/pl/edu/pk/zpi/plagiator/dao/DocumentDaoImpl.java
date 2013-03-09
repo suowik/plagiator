@@ -1,20 +1,18 @@
 package pl.edu.pk.zpi.plagiator.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.domain.Document;
+import pl.edu.pk.zpi.plagiator.domain.StoredDocuments;
+import pl.edu.pk.zpi.plagiator.util.ShutdownUtil;
 import sun.net.www.MimeTable;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
-import javax.jcr.Node;
-import javax.jcr.Repository;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-import java.io.File;
+import javax.jcr.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * User: msendyka
@@ -22,7 +20,8 @@ import java.util.List;
  * Time: 11:20
  */
 @Component
-public class DocumentDao implements Dao<Document> {
+public class DocumentDaoImpl implements DocumentsDao {
+    public static final String ADMIN = "admin";
     private final String PATH = "docs";
 
     @Autowired
@@ -31,8 +30,8 @@ public class DocumentDao implements Dao<Document> {
 
     @PostConstruct
     public void init() throws RepositoryException {
-        session = repository.login();
-        save(new Document(new File("test.docx")));
+        session = repository.login(new SimpleCredentials(ADMIN, new char[]{}));
+        findAll();
     }
 
     @PreDestroy
@@ -41,15 +40,18 @@ public class DocumentDao implements Dao<Document> {
     }
 
     @Override
-    public List<Document> findAll() {
+    public StoredDocuments findAll() {
         try {
             Node rootNode = session.getRootNode();
-
+            Node rootDocs = rootNode.getNode(PATH);
+            NodeIterator nodes = rootDocs.getNodes();
+            return new StoredDocuments(nodes);
         } catch (RepositoryException e) {
             //TODO logowac i system exit-1
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        ShutdownUtil.shutdown();
+        return null;
     }
 
     @Override
@@ -67,15 +69,17 @@ public class DocumentDao implements Dao<Document> {
             try {
                 resNode.setProperty("jcr:data", new FileInputStream(entity.getFile()));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                e.printStackTrace();
             }
 
+            session.save();
+
         } catch (RepositoryException e) {
-            //TODO logowac i system exit-1
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            ShutdownUtil.shutdown();
         }
     }
 
+    @Required
     public void setRepository(Repository repository) {
         this.repository = repository;
     }

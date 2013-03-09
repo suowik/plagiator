@@ -7,11 +7,9 @@ import java.util.List;
  * Date: 09.03.13
  * Time: 11:15
  */
-public interface Dao<E> {
+public interface Dao<E> extends SavingDao<E> {
 
     List<E> findAll();
-
-    void save(E entity);
 
 
 }

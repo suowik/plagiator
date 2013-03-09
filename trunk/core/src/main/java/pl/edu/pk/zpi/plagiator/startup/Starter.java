@@ -30,7 +30,6 @@ public class Starter {
         mainFrame.setSize(new Dimension(1024, 768));
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
-        int k;
 
     }
 }

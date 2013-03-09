@@ -31,5 +31,8 @@ public class Starter {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
 
+        //TODO zamykanie kontekstu przy zamknieciu okna gui i przy wywlowaniu ShutdownUtil
+
+
     }
 }

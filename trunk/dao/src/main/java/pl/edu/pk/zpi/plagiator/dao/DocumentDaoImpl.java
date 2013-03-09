@@ -1,7 +1,6 @@
 package pl.edu.pk.zpi.plagiator.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.domain.Document;
 import pl.edu.pk.zpi.plagiator.domain.StoredDocuments;
@@ -79,8 +78,4 @@ public class DocumentDaoImpl implements DocumentsDao {
         }
     }
 
-    @Required
-    public void setRepository(Repository repository) {
-        this.repository = repository;
-    }
 }

@@ -20,3 +20,14 @@ zmieniają znaczenia tekstu. W szczególności usuwa się krótkie wyrazy (się,
 - zmiana wszystkich wyrazów na ich formę podstawową (ale z tego rezygnujemy, bo nie ma czasu)
 
 Może to si przyda: http://pl.scribd.com/doc/119166607/Magisterka-Antyplagiat-Lukasz-Poczatek
+
+
+By dstroj::
+1) Pytanie: gdzie możemy rozmawiać o tym wszystkim? Na forum kierunku, czy może na jakimś temacie wiki? 
+2) Co do porównywarki pdfów/doców/docx, ja widzę jedyne rozwiązanie:
+http://www.diffnow.com/
+Przykładowe użycie:
+http://www.diffnow.com/?url1=http://www.diffnow.com/demo/1.docx&url2=http://www.diffnow.com/demo/2.docx
+www.diffnow.com/?url1=www.ieee.org/documents/MSW_A4_format.doc&url2=http://www.ieee.org/documents/MSW_A4_format.doc
+Będę szczery, że osobiście szukałem parę godzin fajnych bibliotek i po dłuższej analizie za dużo pierniczenia:(
+EoT

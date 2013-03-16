@@ -1,10 +1,12 @@
 package pl.edu.pk.zpi.plagiator.mainwindow;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
+import java.util.Properties;
 
 /**
  * User: msendyka
@@ -15,6 +17,8 @@ import javax.swing.*;
 public class MainFrameFactory {
 
     private JFrame mainFrame;
+    @Autowired
+    private Properties properties;
 
     @Value("${mainFrame.name}")
     private String windowName;

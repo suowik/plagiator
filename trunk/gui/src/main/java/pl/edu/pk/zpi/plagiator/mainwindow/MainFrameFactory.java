@@ -3,9 +3,11 @@ package pl.edu.pk.zpi.plagiator.mainwindow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import pl.edu.pk.zpi.plagiator.menu.MenuBarFactory;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
+import java.awt.*;
 import java.util.Properties;
 
 /**
@@ -19,9 +21,12 @@ public class MainFrameFactory {
     private JFrame mainFrame;
     @Autowired
     private Properties properties;
+    @Autowired
+    private MenuBarFactory menuBarFactory;
 
     @Value("${mainFrame.name}")
     private String windowName;
+    private JPanel contentPanel;
 
     @PostConstruct
     public void init() {
@@ -40,6 +45,8 @@ public class MainFrameFactory {
     private JFrame createMainFrame(String name) {
         JFrame frame = new JFrame(name);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().add(menuBarFactory.getMenuBar(), BorderLayout.PAGE_START);
+        frame.getContentPane().add(contentPanel = new JPanel(), BorderLayout.CENTER);
         mainFrame = frame;
         return frame;
 
@@ -47,5 +54,13 @@ public class MainFrameFactory {
 
     public JFrame getMainFrame() {
         return mainFrame;
+    }
+
+    public JPanel getContentPanel() {
+        return contentPanel;
+    }
+
+    public void setContentPanel(JPanel contentPanel) {
+        this.contentPanel = contentPanel;
     }
 }

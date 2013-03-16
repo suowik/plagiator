@@ -29,8 +29,8 @@ public class DocumentDaoImpl implements DocumentsDao {
 
     @PostConstruct
     public void init() throws RepositoryException {
-        session = repository.login(new SimpleCredentials(ADMIN, new char[]{}));
-        findAll();
+//        session = repository.login(new SimpleCredentials(ADMIN, new char[]{}));
+//        findAll();
     }
 
     @PreDestroy

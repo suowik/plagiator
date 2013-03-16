@@ -20,8 +20,8 @@ public class JcrInstaller {
 
         //po dodaniu jakis nowych galezi do jcra dodajemy tutaj tworzenie ich
         rootNode.addNode("docs");
-
-        cleanup(session);
+        //loadTestFilesPack();
+        session.save();
     }
 
     private static Session openSession(ApplicationContext context) throws RepositoryException {
@@ -29,8 +29,8 @@ public class JcrInstaller {
         return repository.login(new SimpleCredentials("admin", new char[]{}));
     }
 
-    private static void cleanup(Session session) throws RepositoryException {
-        session.save();
-        session.logout();
+    public void loadTestFilesPack() {
+        //TODO dodac tutaj wrzucanienie odrazu do repo testowa paczke plikow doc, tak zeby jakzdy mogl testowac na
+        //tym samym zestawie - pliki te dodac gdzies tez na gita zeby nie problemow
     }
 }

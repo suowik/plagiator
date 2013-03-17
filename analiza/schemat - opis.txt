@@ -1,0 +1,17 @@
+opis do schematu projektu, gdy¿ tem mo¿e byæ ma³o czytelny
+
+Najwa¿niejsza warstwa: core i na niej siê skupia³em.
+Klasa FileLoader udostêpnia metodê loadFile(œcie¿ka_do_pliku) i posiada referencje do klas Parser i CodeParser. metoda loadFile ma za zadanie:
+-konwersje œcie¿ki na plik,
+-zapisanie tego pliku w bazie,
+-sparsowanie do tekstu lub obrobka kodu Ÿród³owego.
+
+Parser zbudowany jest na podstawie wzorca Strategy:
+Parser to interfejs.
+Po nim dziedzicz¹ klasy implementuj¹ce odpowiednie algorytmy (o ile w ogóle konwersja doc i docx ró¿ni¹ siê, tym siê nie zajmowa³em, nie wiem jak to wygl¹da). Ale je¿eli ró¿nice s¹, Strategy wydaje siê tutaj najodpowiedniejsze.
+
+W przypadku CodeParser zastosowa³em Dekorator. W przypadku, gdy Ÿród³a s¹ spakowane, nale¿y klas dekoruj¹cych u¿yæ (np ZipUnpacker, czy RarUnpacker). W przeciwnym przypadku mo¿na dokoratory pomin¹æ i korzystaæ bezpoœrednio z klas PhpParser i JavaParser do parsowania kodu.
+
+No i klasa Comparator. Tutaj znowu Strategy, w zale¿noœci od tego co porównujemy. W sumie mo¿na pomin¹æ klase CodeComparator i klasy PhpComarator i JavaComparator mog¹ dziedziczyæ bezpoœrednio po interfejsie Comparator. Zadanie tych klas jest oczywiste - porównywanie tekstów/kodu Ÿród³owego
+
+W warstwie dao wystarczy chyba tylko jedna klasa, udostêpniaj¹ca takie metody jak store, loadFile(file), loadFiles(file) i loadFiles(). czyli kolejno: zapisanie pliku, odczyt pliku, odczyt wszystkich plików, po za wybranym i odczyt wszystkich plików

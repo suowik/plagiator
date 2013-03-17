@@ -68,7 +68,7 @@ public class DocumentDaoImpl implements DocumentsDao {
             String mimeType = mt.getContentTypeFor(entity.getFile().getName());
             if (mimeType == null) mimeType = "application/octet-stream";
             Node rootNode = session.getRootNode();
-            Node rootDocs = rootNode.addNode(PATH);
+            Node rootDocs = rootNode.getNode(PATH);
             Node fileNode = rootDocs.addNode(entity.getFile().getName(), "nt:file");
             Node resNode = fileNode.addNode("jcr:content", "nt:resource");
             resNode.setProperty("jcr:mimeType", mimeType);

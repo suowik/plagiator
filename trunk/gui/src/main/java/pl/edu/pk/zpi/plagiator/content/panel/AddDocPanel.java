@@ -7,6 +7,7 @@ import pl.edu.pk.zpi.plagiator.domain.StoredDocument;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,7 +37,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
 
     @Override
     public JPanel getContent() {
-         return createPanel();
+        return createPanel();
     }
 
     private JPanel createPanel() {
@@ -45,12 +46,14 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         panel.setBackground(Color.WHITE);
         selectFileLabel = new JLabel("Wybierz plik");
         GridBagConstraints c = new GridBagConstraints();
-        c.gridx=0;
-        c.gridy=0;
+        c.gridx = 0;
+        c.gridy = 0;
         c.weightx = 0.3;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.EAST;
-        c.insets.left = 10; c.insets.right = 10; c.insets.top = 10;
+        c.insets.left = 10;
+        c.insets.right = 10;
+        c.insets.top = 10;
         panel.add(selectFileLabel, c);
         selectFile = new JTextField();
         c = new GridBagConstraints();
@@ -67,16 +70,19 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.gridy = 0;
         c.weightx = 0.1;
         c.fill = GridBagConstraints.NONE;
-        c.insets.right = 10; c.insets.top = 10;
+        c.insets.right = 10;
+        c.insets.top = 10;
         panel.add(selectFileBtn, c);
         JLabel processAfterAddLabel = new JLabel("Przeskanować po dodaniu?");
         c = new GridBagConstraints();
-        c.gridx=0;
-        c.gridy=1;
+        c.gridx = 0;
+        c.gridy = 1;
         c.weightx = 0.3;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.EAST;
-        c.insets.left = 10; c.insets.right = 10; c.insets.top = 10;
+        c.insets.left = 10;
+        c.insets.right = 10;
+        c.insets.top = 10;
         panel.add(processAfterAddLabel, c);
         JCheckBox processAfterAddCheckBox = new JCheckBox();
         c = new GridBagConstraints();
@@ -85,17 +91,20 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.weightx = 0.7;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.WEST;
-        c.insets.right = 10; c.insets.top = 10;
+        c.insets.right = 10;
+        c.insets.top = 10;
         panel.add(processAfterAddCheckBox, c);
         addBtn = new JButton("Dodaj");
         addBtn.addActionListener(this);
         c = new GridBagConstraints();
-        c.gridx=0;
-        c.gridy=3;
+        c.gridx = 0;
+        c.gridy = 3;
         c.weightx = 0.5;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.EAST;
-        c.insets.left = 10; c.insets.right = 10; c.insets.top = 10;
+        c.insets.left = 10;
+        c.insets.right = 10;
+        c.insets.top = 10;
         panel.add(addBtn, c);
         cancelBtn = new JButton("Anuluj");
         cancelBtn.addActionListener(this);
@@ -105,15 +114,17 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.weightx = 0.5;
         c.fill = GridBagConstraints.NONE;
         c.anchor = GridBagConstraints.WEST;
-        c.insets.right = 10; c.insets.top = 10;
+        c.insets.right = 10;
+        c.insets.top = 10;
         panel.add(cancelBtn, c);
-        panel.setBorder(new EmptyBorder(0,200,0,200));
+        panel.setBorder(new EmptyBorder(0, 200, 0, 200));
         return panel;
     }
 
     private void createFileChooser() {
-                       JFileChooser fileChooser = new JFileChooser();
+        JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Microsoft Documents (*.doc, *.docx)", "doc", "docx"));
         int returnVal = fileChooser.showOpenDialog(null);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -125,18 +136,18 @@ public class AddDocPanel implements ContentPanel, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource().equals(selectFileBtn)) {
-             createFileChooser();
+        if (e.getSource().equals(selectFileBtn)) {
+            createFileChooser();
         }
-        if(e.getSource().equals(addBtn)) {
-             contentManager.saveFile(selectedFile);
+        if (e.getSource().equals(addBtn)) {
+            contentManager.saveFile(selectedFile);
             Iterator<StoredDocument> iterator = contentManager.findAll().iterator();
-             while(iterator.hasNext()) {
-                 StoredDocument document = iterator.next();
-                 System.out.println(document.getFileName());
-             }
+            while (iterator.hasNext()) {
+                StoredDocument document = iterator.next();
+                System.out.println(document.getFileName());
+            }
         }
-        if(e.getSource().equals(cancelBtn)) {
+        if (e.getSource().equals(cancelBtn)) {
             contentManager.setContent(ContentPanelFactory.createContent(Content.RESULT, contentManager).getContent());
         }
     }

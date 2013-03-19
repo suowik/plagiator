@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 public class TextProcessor {
 
-  public void extract(File file) throws IOException {
+  public void process(File file) throws IOException {
 		
 		File temp = File.createTempFile("file", ".txt", file.getParentFile());
 		String charset = "UTF-8";

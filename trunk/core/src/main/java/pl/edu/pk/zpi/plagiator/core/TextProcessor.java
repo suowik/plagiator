@@ -1,4 +1,4 @@
-package pl.edu.pk.zpi.plagiator.core.extractor;
+package pl.edu.pk.zpi.plagiator.core;
 
 import java.io.BufferedReader;
 import java.io.File;

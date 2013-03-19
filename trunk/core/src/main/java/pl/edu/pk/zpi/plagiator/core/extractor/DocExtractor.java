@@ -29,6 +29,9 @@ public class DocExtractor implements Extractor {
 			if (os != null) {
 				os.close();
 			}
+			if(is!=null){
+				is.close();
+			}
 		}
 
 	}

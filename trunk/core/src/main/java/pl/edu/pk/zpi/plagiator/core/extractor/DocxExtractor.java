@@ -30,6 +30,9 @@ public class DocxExtractor implements Extractor {
 			if (os != null) {
 				os.close();
 			}
+			if(is!=null){
+				is.close();
+			}
 		}
 	}
 

@@ -33,7 +33,7 @@ public class TextProcessor {
 				//obsluga cytatow na >1 linii
 			}
 			
-			line = line.replaceAll("\".*?\"", "");
+			 line = line.replaceAll("\".*?\"", "");
 			 line = line.replaceAll("[^A-Za-z0-9 ]", "");
 			 line = line.replaceAll("\\b[\\w']{1,2}\\b", "");
 			 line = line.replaceAll("\\s{2,}", " ");

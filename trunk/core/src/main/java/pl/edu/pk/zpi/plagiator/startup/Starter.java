@@ -29,6 +29,7 @@ public class Starter {
         JFrame mainFrame = p.mainFrameFactory.getMainFrame();
         mainFrame.setSize(new Dimension(1024, 768));
         mainFrame.setLocationRelativeTo(null);
+        mainFrame.setResizable(false);
         mainFrame.setVisible(true);
 
         //TODO zamykanie kontekstu przy zamknieciu okna gui i przy wywlowaniu ShutdownUtil

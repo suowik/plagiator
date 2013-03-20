@@ -29,18 +29,19 @@ public class DocumentDaoImpl implements DocumentsDao {
 
     @PostConstruct
     public void init() throws RepositoryException {
-        session = repository.login(new SimpleCredentials(ADMIN, new char[]{}));
-        findAll();
     }
 
     @PreDestroy
     public void destroy() {
-        session.logout();
+        if (session != null) {
+            session.logout();
+        }
     }
 
     @Override
     public StoredDocuments findAll() {
         try {
+            lazy();
             Node rootNode = session.getRootNode();
             Node rootDocs = rootNode.getNode(PATH);
             NodeIterator nodes = rootDocs.getNodes();
@@ -53,14 +54,21 @@ public class DocumentDaoImpl implements DocumentsDao {
         return null;
     }
 
+    private void lazy() throws RepositoryException {
+        if (session == null) {
+            session = repository.login(new SimpleCredentials(ADMIN, new char[]{}));
+        }
+    }
+
     @Override
     public void save(Document entity) {
         try {
+            lazy();
             MimeTable mt = MimeTable.getDefaultTable();
             String mimeType = mt.getContentTypeFor(entity.getFile().getName());
             if (mimeType == null) mimeType = "application/octet-stream";
             Node rootNode = session.getRootNode();
-            Node rootDocs = rootNode.addNode(PATH);
+            Node rootDocs = rootNode.getNode(PATH);
             Node fileNode = rootDocs.addNode(entity.getFile().getName(), "nt:file");
             Node resNode = fileNode.addNode("jcr:content", "nt:resource");
             resNode.setProperty("jcr:mimeType", mimeType);

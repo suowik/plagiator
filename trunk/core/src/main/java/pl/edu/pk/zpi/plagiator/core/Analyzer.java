@@ -1,10 +1,13 @@
 package pl.edu.pk.zpi.plagiator.core;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 import pl.edu.pk.zpi.plagiator.core.extractor.BlockExtractor;
 
@@ -14,8 +17,9 @@ import pl.edu.pk.zpi.plagiator.core.extractor.BlockExtractor;
  * @author b4rt3k
  * 
  */
-public class Analyzer {	
-	private TextProcessor processor=new TextProcessor();
+public class Analyzer {
+	private TextProcessor processor = new TextProcessor();
+	private StringBuilder substringBuilder = new StringBuilder();
 
 	/**
 	 * Class holds block indexes in pattern and source file (index mean word
@@ -67,22 +71,19 @@ public class Analyzer {
 	/**
 	 * Method finds given pattern in source file
 	 * 
-	 * @param pattern
-	 * @param sourceFile
-	 * @param blockLength
-	 * @param comparator
 	 * @return
 	 * @throws FileNotFoundException
 	 */
-	private Collection<Pair> findPattern(int patternIndex, String pattern, File sourceFile, int blockLength) throws FileNotFoundException {
-		BlockExtractor b1 = new BlockExtractor(sourceFile, blockLength);
-		Set<Pair> output = new HashSet<Pair>();
+	private Collection<Pair> findPattern(int patternIndex, String pattern, String[] sourceFileArray, int blockLength) throws FileNotFoundException {
+		List<Pair> output = new LinkedList<Pair>();
 		int substringIndex = 0;
-		while (b1.hasMoreBlocks()) {			
-			if (processor.process(b1.nextBlock(1)).equals(processor.process(pattern))) {
+		String substring = buildSubstring(substringIndex, blockLength, sourceFileArray);
+		while (!substring.isEmpty()) {
+			if (processor.process(substring).equals(processor.process(pattern))) {
 				output.add(new Pair(patternIndex, substringIndex));
 			}
 			substringIndex++;
+			substring = buildSubstring(substringIndex, blockLength, sourceFileArray);
 		}
 		return output;
 	}
@@ -91,21 +92,57 @@ public class Analyzer {
 	 * Method analyzes two files. We assume that files contains plain text
 	 * before preprocessing (but without the quotes?)
 	 * 
-	 * @param patternFile
-	 * @param sourceFile
-	 * @param blockLength
-	 * @param comparator
 	 * @return
 	 * @throws FileNotFoundException
 	 */
 	public Collection<Pair> analyze(File patternFile, File sourceFile, int blockLength) throws FileNotFoundException {
 		BlockExtractor extr = new BlockExtractor(patternFile, blockLength);
-		Set<Pair> output = new HashSet<Pair>();
+		List<Pair> output = new LinkedList<Pair>();
 		int patternIndex = 0;
+		String[] sourceFileArray = fileToStringArray(sourceFile);
 		while (extr.hasMoreBlocks()) {
-			output.addAll(findPattern(patternIndex, extr.nextBlock(), sourceFile, blockLength));
+			output.addAll(findPattern(patternIndex, extr.nextBlock(), sourceFileArray, blockLength));
 			patternIndex += blockLength;
 		}
 		return output;
+	}
+
+	/**
+	 * Method builds substring to analyze
+	 * 
+	 * @return
+	 */
+	private String buildSubstring(int substringIndex, int blockLength, String[] arr) {
+		substringBuilder.setLength(0);
+		int availableTokens = arr.length - substringIndex;
+		int tokensToRead = blockLength > availableTokens ? availableTokens : blockLength;
+		for (int i = substringIndex; i < (substringIndex + tokensToRead); i++) {
+			substringBuilder.append(arr[i]).append(BlockExtractor.WORD_SEPARATOR);
+		}
+		return substringBuilder.toString();
+	}
+
+	/**
+	 * Methods converting file to string array
+	 * 
+	 * @return
+	 */
+	private String[] fileToStringArray(File f) {
+		String result = null;
+		DataInputStream in = null;
+		try {
+			byte[] buffer = new byte[(int) f.length()];
+			in = new DataInputStream(new FileInputStream(f));
+			in.readFully(buffer);
+			result = new String(buffer, "UTF-8");
+		} catch (IOException e) {
+			throw new RuntimeException("IO problem in fileToString", e);
+		} finally {
+			try {
+				in.close();
+			} catch (IOException e) { /* ignore it */
+			}
+		}
+		return result.split(BlockExtractor.WORD_SEPARATOR);
 	}
 }

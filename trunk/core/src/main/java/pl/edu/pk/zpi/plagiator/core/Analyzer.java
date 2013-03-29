@@ -9,6 +9,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import pl.edu.pk.zpi.plagiator.core.extractor.BlockExtractor;
 
 /**
@@ -18,6 +20,7 @@ import pl.edu.pk.zpi.plagiator.core.extractor.BlockExtractor;
  * 
  */
 public class Analyzer {
+	private static final Logger logger = Logger.getLogger(Analyzer.class);
 	private TextProcessor processor = new TextProcessor();
 	private StringBuilder substringBuilder = new StringBuilder();
 
@@ -57,15 +60,6 @@ public class Analyzer {
 		public String toString() {
 			return "{" + indexInPatternFile + ", " + indexInSourceFile + "}";
 		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + indexInPatternFile;
-			result = prime * result + indexInSourceFile;
-			return result;
-		}
 	}
 
 	/**
@@ -80,6 +74,7 @@ public class Analyzer {
 		String substring = buildSubstring(substringIndex, blockLength, sourceFileArray);
 		while (!substring.isEmpty()) {
 			if (processor.process(substring).equals(processor.process(pattern))) {
+				logger.info("Math found: " + patternIndex + ", " + substringIndex);
 				output.add(new Pair(patternIndex, substringIndex));
 			}
 			substringIndex++;
@@ -96,6 +91,7 @@ public class Analyzer {
 	 * @throws FileNotFoundException
 	 */
 	public Collection<Pair> analyze(File patternFile, File sourceFile, int blockLength) throws FileNotFoundException {
+		logger.info("Started comparison: " + patternFile.getName() + " and " + sourceFile.getName() + " with block length " + blockLength);
 		BlockExtractor extr = new BlockExtractor(patternFile, blockLength);
 		List<Pair> output = new LinkedList<Pair>();
 		int patternIndex = 0;
@@ -128,6 +124,7 @@ public class Analyzer {
 	 * @return
 	 */
 	private String[] fileToStringArray(File f) {
+		logger.info("Converting file: " + f.getName() + " to string array started.");
 		String result = null;
 		DataInputStream in = null;
 		try {
@@ -136,13 +133,26 @@ public class Analyzer {
 			in.readFully(buffer);
 			result = new String(buffer, "UTF-8");
 		} catch (IOException e) {
-			throw new RuntimeException("IO problem in fileToString", e);
+			String msg = "IO problem in fileToStringArray";
+			logger.error(msg, e);
+			throw new RuntimeException(msg, e);
 		} finally {
 			try {
 				in.close();
 			} catch (IOException e) { /* ignore it */
 			}
 		}
+		logger.info("Converting completed.");
 		return result.split(BlockExtractor.WORD_SEPARATOR);
+	}
+
+	public static void main(String[] args) {
+		try {
+			System.out.println(new Analyzer().analyze(new File("C:\\Users\\b4rt3k\\Desktop\\test.txt"), new File(
+					"C:\\Users\\b4rt3k\\Desktop\\test2.txt"), 5));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

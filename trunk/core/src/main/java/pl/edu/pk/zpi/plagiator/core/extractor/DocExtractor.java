@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 
+import org.apache.log4j.Logger;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.extractor.WordExtractor;
 
@@ -13,6 +14,7 @@ import org.apache.poi.hwpf.extractor.WordExtractor;
  * 
  */
 public class DocExtractor implements Extractor {
+	private static final Logger logger = Logger.getLogger(DocExtractor.class);
 
 	/**
 	 * Method read bytes from doc input stream and saves it to given output
@@ -22,6 +24,7 @@ public class DocExtractor implements Extractor {
 	 */
 	@Override
 	public void extract(InputStream is, OutputStream os) throws IOException {
+		logger.info("Extraction process started.");
 		try {
 			WordExtractor extractor = new WordExtractor(new HWPFDocument(is));
 			os.write(extractor.getText().getBytes(Charset.forName("UTF-8")));
@@ -29,10 +32,10 @@ public class DocExtractor implements Extractor {
 			if (os != null) {
 				os.close();
 			}
-			if(is!=null){
+			if (is != null) {
 				is.close();
 			}
 		}
-
+		logger.info("Extraction completed.");
 	}
 }

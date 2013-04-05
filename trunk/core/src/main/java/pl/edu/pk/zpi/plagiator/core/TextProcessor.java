@@ -10,6 +10,12 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
 public class TextProcessor {
+	
+
+	// TODO dodanie implementacji
+	public String process(String input){
+		return input;		
+	}
 
   public void process(File file) throws IOException {
 		

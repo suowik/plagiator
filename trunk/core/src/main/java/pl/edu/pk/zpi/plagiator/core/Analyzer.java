@@ -146,13 +146,4 @@ public class Analyzer {
 		return result.split(BlockExtractor.WORD_SEPARATOR);
 	}
 
-	public static void main(String[] args) {
-		try {
-			System.out.println(new Analyzer().analyze(new File("C:\\Users\\b4rt3k\\Desktop\\test.txt"), new File(
-					"C:\\Users\\b4rt3k\\Desktop\\test2.txt"), 5));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.menu.MenuBarFactory;
+import pl.edu.pk.zpi.plagiator.status.StatusBarFactory;
 
 import javax.annotation.PostConstruct;
 import javax.swing.*;
@@ -23,6 +24,8 @@ public class MainFrameFactory {
     private Properties properties;
     @Autowired
     private MenuBarFactory menuBarFactory;
+    @Autowired
+    private StatusBarFactory statusBarFactory;
 
     @Value("${mainFrame.name}")
     private String windowName;
@@ -47,6 +50,7 @@ public class MainFrameFactory {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(menuBarFactory.getMenuBar(), BorderLayout.PAGE_START);
         frame.getContentPane().add(contentPanel = new JPanel(), BorderLayout.CENTER);
+        frame.getContentPane().add(statusBarFactory.getStatusBar(),BorderLayout.SOUTH);
         mainFrame = frame;
         return frame;
 

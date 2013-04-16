@@ -7,8 +7,8 @@ import pl.edu.pk.zpi.plagiator.content.ContentManager;
 import pl.edu.pk.zpi.plagiator.content.ContentPanelFactory;
 import pl.edu.pk.zpi.plagiator.dao.SavingDao;
 import pl.edu.pk.zpi.plagiator.domain.Document;
-import pl.edu.pk.zpi.plagiator.domain.StoredDocument;
 import pl.edu.pk.zpi.plagiator.runner.Runner;
+import pl.edu.pk.zpi.plagiator.status.StatusBarFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,7 +17,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Iterator;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +29,8 @@ import java.util.Iterator;
 public class AddDocPanel implements ContentPanel, ActionListener {
 
     @Autowired
+    private Properties properties;
+    @Autowired
     private Runner runner;
     @Autowired
     private SavingDao<Document> savingDao;
@@ -36,6 +38,8 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     private ContentManager contentManager;
     @Autowired
     private ContentPanelFactory contentPanelFactory;
+    @Autowired
+    private StatusBarFactory statusBarFactory;
     private JButton addBtn;
     private JButton cancelBtn;
     private JButton selectFileBtn;
@@ -56,7 +60,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
         panel.setBackground(Color.WHITE);
-        selectFileLabel = new JLabel("Wybierz plik");
+        selectFileLabel = new JLabel(properties.getProperty("addDoc.selectFile"));
         GridBagConstraints c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 0;
@@ -85,7 +89,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.insets.right = 10;
         c.insets.top = 10;
         panel.add(selectFileBtn, c);
-        JLabel processAfterAddLabel = new JLabel("Przeskanować po dodaniu?");
+        JLabel processAfterAddLabel = new JLabel(properties.getProperty("addDoc.scanAfterAdd"));
         c = new GridBagConstraints();
         c.gridx = 0;
         c.gridy = 1;
@@ -106,7 +110,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.insets.right = 10;
         c.insets.top = 10;
         panel.add(processAfterAddCheckBox, c);
-        addBtn = new JButton("Dodaj");
+        addBtn = new JButton(properties.getProperty("addDoc.add"));
         addBtn.addActionListener(this);
         c = new GridBagConstraints();
         c.gridx = 0;
@@ -118,7 +122,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.insets.right = 10;
         c.insets.top = 10;
         panel.add(addBtn, c);
-        cancelBtn = new JButton("Anuluj");
+        cancelBtn = new JButton(properties.getProperty("addDoc.cancel"));
         cancelBtn.addActionListener(this);
         c = new GridBagConstraints();
         c.gridx = 1;
@@ -152,8 +156,12 @@ public class AddDocPanel implements ContentPanel, ActionListener {
             createFileChooser();
         }
         if (e.getSource().equals(addBtn)) {
+            if (selectedFile == null || !selectedFile.exists()) {
+                statusBarFactory.setText(properties.getProperty("addDoc.fileNotSelected"));
+                return;
+            }
             Document document = new Document(selectedFile);
-            if(processAfterAddCheckBox.isSelected()) {
+            if (processAfterAddCheckBox.isSelected()) {
                 runner.examineDocument(document);
             }
             savingDao.save(document);

@@ -6,10 +6,12 @@ import pl.edu.pk.zpi.plagiator.dao.DocumentsDao;
 import pl.edu.pk.zpi.plagiator.domain.Document;
 import pl.edu.pk.zpi.plagiator.domain.StoredDocuments;
 import pl.edu.pk.zpi.plagiator.mainwindow.MainFrameFactory;
+import pl.edu.pk.zpi.plagiator.status.StatusBarFactory;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Properties;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,13 +23,18 @@ import java.io.File;
 public class ContentManager {
 
     @Autowired
+    private Properties properties;
+    @Autowired
     private MainFrameFactory mainFrameFactory;
+    @Autowired
+    private StatusBarFactory statusBarFactory;
     @Autowired
     private DocumentsDao documentsDao;
 
     public void setContent(JPanel panel) {
         getContentPane().remove(mainFrameFactory.getContentPanel());
         mainFrameFactory.setContentPanel(panel);
+        statusBarFactory.setText(properties.getProperty("statusBar.default"));
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().revalidate();
         getContentPane().repaint();

@@ -1,9 +1,14 @@
 package pl.edu.pk.zpi.plagiator.content.panel;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.content.Content;
 import pl.edu.pk.zpi.plagiator.content.ContentManager;
 import pl.edu.pk.zpi.plagiator.content.ContentPanelFactory;
+import pl.edu.pk.zpi.plagiator.dao.SavingDao;
+import pl.edu.pk.zpi.plagiator.domain.Document;
 import pl.edu.pk.zpi.plagiator.domain.StoredDocument;
+import pl.edu.pk.zpi.plagiator.runner.Runner;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -20,7 +25,13 @@ import java.util.Iterator;
  * Date: 16.03.13
  * Time: 15:41
  */
+@Component
 public class AddDocPanel implements ContentPanel, ActionListener {
+
+    @Autowired
+    private Runner runner;
+    @Autowired
+    private SavingDao<Document> savingDao;
 
     private ContentManager contentManager;
     private JButton addBtn;
@@ -29,6 +40,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     private JLabel selectFileLabel;
     private JTextField selectFile;
     private File selectedFile;
+    private JCheckBox processAfterAddCheckBox;
 
     public AddDocPanel(ContentManager contentManager) {
         this.contentManager = contentManager;
@@ -84,7 +96,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
         c.insets.right = 10;
         c.insets.top = 10;
         panel.add(processAfterAddLabel, c);
-        JCheckBox processAfterAddCheckBox = new JCheckBox();
+        processAfterAddCheckBox = new JCheckBox();
         c = new GridBagConstraints();
         c.gridx = 1;
         c.gridy = 1;
@@ -140,12 +152,11 @@ public class AddDocPanel implements ContentPanel, ActionListener {
             createFileChooser();
         }
         if (e.getSource().equals(addBtn)) {
-            contentManager.saveFile(selectedFile);
-            Iterator<StoredDocument> iterator = contentManager.findAll().iterator();
-            while (iterator.hasNext()) {
-                StoredDocument document = iterator.next();
-                System.out.println(document.getFileName());
+            Document document = new Document(selectedFile);
+            if(processAfterAddCheckBox.isSelected()) {
+                runner.examineDocument(document);
             }
+            savingDao.save(document);
         }
         if (e.getSource().equals(cancelBtn)) {
             contentManager.setContent(ContentPanelFactory.createContent(Content.RESULT, contentManager).getContent());

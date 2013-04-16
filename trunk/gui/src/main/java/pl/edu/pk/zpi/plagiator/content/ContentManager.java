@@ -37,13 +37,4 @@ public class ContentManager {
         return mainFrameFactory.getMainFrame().getContentPane();
     }
 
-    public void saveFile(File file) {
-        Document document = new Document(file);
-        documentsDao.save(document);
-    }
-
-    public StoredDocuments findAll() {
-        return documentsDao.findAll();
-    }
-
 }

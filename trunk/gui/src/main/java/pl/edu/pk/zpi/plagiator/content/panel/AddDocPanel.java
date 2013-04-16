@@ -32,8 +32,10 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     private Runner runner;
     @Autowired
     private SavingDao<Document> savingDao;
-
+    @Autowired
     private ContentManager contentManager;
+    @Autowired
+    private ContentPanelFactory contentPanelFactory;
     private JButton addBtn;
     private JButton cancelBtn;
     private JButton selectFileBtn;
@@ -42,10 +44,8 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     private File selectedFile;
     private JCheckBox processAfterAddCheckBox;
 
-    public AddDocPanel(ContentManager contentManager) {
-        this.contentManager = contentManager;
+    public AddDocPanel() {
     }
-
 
     @Override
     public JPanel getContent() {
@@ -159,7 +159,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
             savingDao.save(document);
         }
         if (e.getSource().equals(cancelBtn)) {
-            contentManager.setContent(ContentPanelFactory.createContent(Content.RESULT, contentManager).getContent());
+            contentManager.setContent(contentPanelFactory.createContent(Content.RESULT).getContent());
         }
     }
 }

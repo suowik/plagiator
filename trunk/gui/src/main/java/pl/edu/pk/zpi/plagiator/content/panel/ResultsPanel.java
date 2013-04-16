@@ -1,5 +1,7 @@
 package pl.edu.pk.zpi.plagiator.content.panel;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.content.ContentManager;
 
 import javax.swing.*;
@@ -10,12 +12,13 @@ import javax.swing.*;
  * Date: 16.03.13
  * Time: 15:42
  */
+@Component
 public class ResultsPanel implements ContentPanel {
 
+    @Autowired
     private ContentManager contentManager;
 
-    public ResultsPanel(ContentManager contentManager) {
-        this.contentManager = contentManager;
+    public ResultsPanel() {
     }
 
     @Override

@@ -28,6 +28,8 @@ public class MenuBarFactory implements ActionListener{
     private Properties properties;
     @Autowired
     private ContentManager contentManager;
+    @Autowired
+    private ContentPanelFactory contentPanelFactory;
 
     @PostConstruct
     public void init() {
@@ -52,10 +54,10 @@ public class MenuBarFactory implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(addDocument)) {
-            contentManager.setContent(ContentPanelFactory.createContent(Content.ADD_DOC, contentManager).getContent());
+            contentManager.setContent(contentPanelFactory.createContent(Content.ADD_DOC).getContent());
         }
         if(e.getSource().equals(resultsTable)) {
-            contentManager.setContent(ContentPanelFactory.createContent(Content.RESULT, contentManager).getContent());
+            contentManager.setContent(contentPanelFactory.createContent(Content.RESULT).getContent());
         }
     }
 }

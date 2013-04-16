@@ -1,5 +1,7 @@
 package pl.edu.pk.zpi.plagiator.content;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.content.panel.AddDocPanel;
 import pl.edu.pk.zpi.plagiator.content.panel.ContentPanel;
 import pl.edu.pk.zpi.plagiator.content.panel.ResultsPanel;
@@ -10,15 +12,21 @@ import pl.edu.pk.zpi.plagiator.content.panel.ResultsPanel;
  * Date: 16.03.13
  * Time: 13:50
  */
+@Component
 public class ContentPanelFactory {
 
-    public static ContentPanel createContent(Content content, ContentManager contentManager) {
+    @Autowired
+    private AddDocPanel addDocPanel;
+    @Autowired
+    private ResultsPanel resultsPanel;
+
+    public ContentPanel createContent(Content content) {
 
         switch (content) {
             case ADD_DOC:
-                return new AddDocPanel(contentManager);
+                return addDocPanel;
             case RESULT:
-                return new ResultsPanel(contentManager);
+                return resultsPanel;
             default:
                 throw new IllegalArgumentException("");
         }

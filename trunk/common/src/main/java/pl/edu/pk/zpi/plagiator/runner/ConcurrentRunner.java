@@ -13,7 +13,7 @@ import java.util.List;
  * Time: 11:42
  */
 @Component
-public class ConcurentRunner {
+public class ConcurrentRunner {
 
     @Autowired
     private Runner defaultRunner;

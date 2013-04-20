@@ -180,12 +180,12 @@ public class AddDocPanel implements ContentPanel, ActionListener {
                     @Override
                     public void examineComplete(List<ComparisonResult> results) {
                         int suspiciousCount = 0;
-                        for(ComparisonResult comparisonResult : results) {
+                        for (ComparisonResult comparisonResult : results) {
                             if (comparisonResult.getStatus().equals(ComparisonStatus.SUSPICIOUS)) {
                                 suspiciousCount++;
                             }
                         }
-                        statusBarFactory.setText("COMPLETE: " + results.get(0).getExaminedFileName() + " " + suspiciousCount +"/"+results.size());
+                        statusBarFactory.setText("COMPLETE: " + results.get(0).getExaminedFileName() + " " + suspiciousCount + "/" + results.size());
                     }
                 }));
             }

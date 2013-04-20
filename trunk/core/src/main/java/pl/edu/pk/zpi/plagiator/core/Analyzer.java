@@ -32,7 +32,7 @@ public class Analyzer {
         String substring = buildSubstring(substringIndex, blockLength, sourceFileArray);
         while (!substring.isEmpty()) {
             if (processor.process(substring).equals(processor.process(pattern))) {
-                logger.info("Match found: " + patternIndex + ", " + substringIndex);
+                logger.info("Match found: " + patternIndex + ", " + substringIndex +  " : " + pattern + ", " + substring);
                 output.add(new MatchedTextBlocks(patternIndex, pattern, substringIndex, substring));
             }
             substringIndex++;

@@ -18,13 +18,13 @@ public class ConcurentRunner {
     @Autowired
     private Runner defaultRunner;
 
-    public void run(final Document document, final ExamineListener examineListener) {
-        new Runnable() {
+    public Runnable run(final Document document, final ExamineListener examineListener) {
+        return new Runnable() {
             @Override
             public void run() {
                 List<ComparisonResult> results = defaultRunner.examineDocument(document);
                 examineListener.examineComplete(results);
             }
-        }.run();
+        };
     }
 }

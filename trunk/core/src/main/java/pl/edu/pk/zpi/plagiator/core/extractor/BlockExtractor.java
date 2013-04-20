@@ -57,8 +57,11 @@ public class BlockExtractor {
         blockBuilder.setLength(0);
         int tokensToRead = blockLength;
         while (tokenizer.hasNext() && counter < tokensToRead) {
-            blockBuilder.append(tokenizer.next()).append(WORD_SEPARATOR);
-            counter++;
+            String block = tokenizer.next().trim();
+            if (!block.equals("")) {
+                blockBuilder.append(block).append(WORD_SEPARATOR);
+                counter++;
+            }
         }
         return blockBuilder.toString();
     }

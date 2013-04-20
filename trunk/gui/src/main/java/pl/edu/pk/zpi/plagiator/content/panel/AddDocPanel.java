@@ -7,6 +7,7 @@ import pl.edu.pk.zpi.plagiator.content.ContentManager;
 import pl.edu.pk.zpi.plagiator.content.ContentPanelFactory;
 import pl.edu.pk.zpi.plagiator.dao.SavingDao;
 import pl.edu.pk.zpi.plagiator.domain.ComparisonResult;
+import pl.edu.pk.zpi.plagiator.domain.ComparisonStatus;
 import pl.edu.pk.zpi.plagiator.domain.Document;
 import pl.edu.pk.zpi.plagiator.runner.ConcurentRunner;
 import pl.edu.pk.zpi.plagiator.runner.ExamineListener;
@@ -21,6 +22,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created with IntelliJ IDEA.
@@ -143,12 +146,12 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     private void createFileChooser() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.setFileFilter(new FileNameExtensionFilter("Microsoft Documents (*.doc, *.docx)", "doc", "docx"));
         int returnVal = fileChooser.showOpenDialog(null);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
-            //This is where a real application would open the file.
             selectFile.setText(selectedFile.getName());
         }
     }
@@ -165,15 +168,23 @@ public class AddDocPanel implements ContentPanel, ActionListener {
             }
             Document document = new Document(selectedFile);
             if (processAfterAddCheckBox.isSelected()) {
-                statusBarFactory.setText("IN PROGRESS");
-                runner.run(document, new ExamineListener() {
+                statusBarFactory.setText("IN PROGRESS: " + selectedFile.getName());
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                executorService.submit(runner.run(document, new ExamineListener() {
                     @Override
                     public void examineComplete(List<ComparisonResult> results) {
-                        statusBarFactory.setText("COMPLETE");
+                        int suspiciousCount = 0;
+                        for(ComparisonResult comparisonResult : results) {
+                            if (comparisonResult.getStatus().equals(ComparisonStatus.SUSPICIOUS)) {
+                                suspiciousCount++;
+                            }
+                        }
+                        statusBarFactory.setText("COMPLETE: " + results.get(0).getExaminedFileName() + " " + suspiciousCount +"/"+results.size());
                     }
-                });
+                }));
             }
             savingDao.save(document);
+            contentManager.setContent(contentPanelFactory.createContent(Content.RESULT).getContent());
         }
         if (e.getSource().equals(cancelBtn)) {
             contentManager.setContent(contentPanelFactory.createContent(Content.RESULT).getContent());

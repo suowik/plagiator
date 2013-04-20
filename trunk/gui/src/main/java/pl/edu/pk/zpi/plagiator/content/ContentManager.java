@@ -34,7 +34,7 @@ public class ContentManager {
     public void setContent(JPanel panel) {
         getContentPane().remove(mainFrameFactory.getContentPanel());
         mainFrameFactory.setContentPanel(panel);
-        statusBarFactory.setText(properties.getProperty("statusBar.default"));
+        //statusBarFactory.setText(properties.getProperty("statusBar.default"));
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().revalidate();
         getContentPane().repaint();

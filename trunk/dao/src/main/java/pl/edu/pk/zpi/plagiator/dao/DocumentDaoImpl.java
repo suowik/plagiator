@@ -1,16 +1,15 @@
 package pl.edu.pk.zpi.plagiator.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import pl.edu.pk.zpi.plagiator.domain.Document;
 import pl.edu.pk.zpi.plagiator.domain.StoredDocument;
 import pl.edu.pk.zpi.plagiator.domain.StoredDocuments;
 import pl.edu.pk.zpi.plagiator.util.ShutdownUtil;
 import sun.net.www.MimeTable;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.jcr.*;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -20,39 +19,16 @@ import java.io.InputStream;
  * Date: 09.03.13
  * Time: 11:20
  */
-@Component
-public class DocumentDaoImpl implements DocumentsDao {
-    public static final String ADMIN = "admin";
+@Repository
+public class DocumentDaoImpl extends AbstractJcrDao implements DocumentsDao {
     private final String PATH = "docs";
-
-    @Autowired
-    private Repository repository;
-    private Session session;
-
-    @PostConstruct
-    public void init() throws RepositoryException {
-    }
-
-    @PreDestroy
-    public void destroy() {
-        if (session != null) {
-            session.logout();
-        }
-    }
 
     @Override
     public StoredDocuments findAll() {
-        try {
-            lazy();
-            Node rootNode = session.getRootNode();
-            Node rootDocs = rootNode.getNode(PATH);
-            NodeIterator nodes = rootDocs.getNodes();
-            return new StoredDocuments(nodes);
-        } catch (RepositoryException e) {
-            //TODO logowac i system exit-1
-            e.printStackTrace();
+        NodeIterator all = findAll(PATH);
+        if (all != null) {
+            return new StoredDocuments(all);
         }
-        ShutdownUtil.shutdown();
         return null;
     }
 
@@ -78,12 +54,6 @@ public class DocumentDaoImpl implements DocumentsDao {
         }
         ShutdownUtil.shutdown();
         return null;
-    }
-
-    private void lazy() throws RepositoryException {
-        if (session == null) {
-            session = repository.login(new SimpleCredentials(ADMIN, new char[]{}));
-        }
     }
 
     @Override

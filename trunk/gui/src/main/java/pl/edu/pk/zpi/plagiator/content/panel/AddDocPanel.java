@@ -1,14 +1,16 @@
 package pl.edu.pk.zpi.plagiator.content.panel;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.content.Content;
 import pl.edu.pk.zpi.plagiator.content.ContentManager;
 import pl.edu.pk.zpi.plagiator.content.ContentPanelFactory;
+import pl.edu.pk.zpi.plagiator.dao.ResultDao;
 import pl.edu.pk.zpi.plagiator.dao.SavingDao;
 import pl.edu.pk.zpi.plagiator.domain.ComparisonResult;
 import pl.edu.pk.zpi.plagiator.domain.Document;
-import pl.edu.pk.zpi.plagiator.runner.ConcurentRunner;
+import pl.edu.pk.zpi.plagiator.runner.ConcurrentRunner;
 import pl.edu.pk.zpi.plagiator.runner.ExamineListener;
 import pl.edu.pk.zpi.plagiator.status.StatusBarFactory;
 
@@ -34,9 +36,12 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     @Autowired
     private Properties properties;
     @Autowired
-    private ConcurentRunner runner;
+    private ConcurrentRunner runner;
+    @Qualifier("documentDaoImpl")
     @Autowired
-    private SavingDao<Document> savingDao;
+    private SavingDao<Document> documentsDao;
+    @Autowired
+    private ResultDao resultDao;
     @Autowired
     private ContentManager contentManager;
     @Autowired
@@ -173,7 +178,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
                     }
                 });
             }
-            savingDao.save(document);
+            documentsDao.save(document);
         }
         if (e.getSource().equals(cancelBtn)) {
             contentManager.setContent(contentPanelFactory.createContent(Content.RESULT).getContent());

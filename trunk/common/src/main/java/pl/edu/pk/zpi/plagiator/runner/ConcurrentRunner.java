@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import pl.edu.pk.zpi.plagiator.domain.ComparisonResult;
 import pl.edu.pk.zpi.plagiator.domain.Document;
 
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -13,18 +14,20 @@ import java.util.List;
  * Time: 11:42
  */
 @Component
-public class ConcurentRunner {
+public class ConcurrentRunner {
 
     @Autowired
     private Runner defaultRunner;
 
     public void run(final Document document, final ExamineListener examineListener) {
-        new Runnable() {
-            @Override
-            public void run() {
-                List<ComparisonResult> results = defaultRunner.examineDocument(document);
-                examineListener.examineComplete(results);
-            }
-        }.run();
+        SwingUtilities.invokeLater(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        List<ComparisonResult> results = defaultRunner.examineDocument(document);
+                        examineListener.examineComplete(results);
+                    }
+                });
+
     }
 }

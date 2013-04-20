@@ -1,5 +1,10 @@
 package pl.edu.pk.zpi.plagiator.domain;
 
+import pl.edu.pk.zpi.plagiator.core.MatchedTextBlocks;
+
+import java.util.Collection;
+import java.util.Date;
+
 /**
  * User: msendyka
  * Date: 16.03.13
@@ -12,4 +17,8 @@ public interface ComparisonResult {
     String getExaminedFileName();
 
     String getComparedFileName();
+
+    Date getDate();
+
+    Collection<MatchedTextBlocks> getMatchedTextBlocks();
 }

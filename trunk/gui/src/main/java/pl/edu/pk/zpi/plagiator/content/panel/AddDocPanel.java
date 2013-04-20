@@ -6,8 +6,10 @@ import pl.edu.pk.zpi.plagiator.content.Content;
 import pl.edu.pk.zpi.plagiator.content.ContentManager;
 import pl.edu.pk.zpi.plagiator.content.ContentPanelFactory;
 import pl.edu.pk.zpi.plagiator.dao.SavingDao;
+import pl.edu.pk.zpi.plagiator.domain.ComparisonResult;
 import pl.edu.pk.zpi.plagiator.domain.Document;
-import pl.edu.pk.zpi.plagiator.runner.Runner;
+import pl.edu.pk.zpi.plagiator.runner.ConcurentRunner;
+import pl.edu.pk.zpi.plagiator.runner.ExamineListener;
 import pl.edu.pk.zpi.plagiator.status.StatusBarFactory;
 
 import javax.swing.*;
@@ -17,6 +19,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -31,7 +34,7 @@ public class AddDocPanel implements ContentPanel, ActionListener {
     @Autowired
     private Properties properties;
     @Autowired
-    private Runner runner;
+    private ConcurentRunner runner;
     @Autowired
     private SavingDao<Document> savingDao;
     @Autowired
@@ -162,7 +165,13 @@ public class AddDocPanel implements ContentPanel, ActionListener {
             }
             Document document = new Document(selectedFile);
             if (processAfterAddCheckBox.isSelected()) {
-                runner.examineDocument(document);
+                statusBarFactory.setText("IN PROGRESS");
+                runner.run(document, new ExamineListener() {
+                    @Override
+                    public void examineComplete(List<ComparisonResult> results) {
+                        statusBarFactory.setText("COMPLETE");
+                    }
+                });
             }
             savingDao.save(document);
         }

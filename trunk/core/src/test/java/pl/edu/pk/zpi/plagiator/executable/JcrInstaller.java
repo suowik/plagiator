@@ -20,6 +20,7 @@ public class JcrInstaller {
 
         //po dodaniu jakis nowych galezi do jcra dodajemy tutaj tworzenie ich
         rootNode.addNode("docs");
+        rootNode.addNode("docs_results");
         //loadTestFilesPack();
         session.save();
     }

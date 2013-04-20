@@ -8,4 +8,8 @@ package pl.edu.pk.zpi.plagiator.domain;
 public interface ComparisonResult {
 
     ComparisonStatus getStatus();
+
+    String getExaminedFileName();
+
+    String getComparedFileName();
 }

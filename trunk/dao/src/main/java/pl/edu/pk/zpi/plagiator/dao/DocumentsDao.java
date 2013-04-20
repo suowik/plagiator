@@ -1,6 +1,7 @@
 package pl.edu.pk.zpi.plagiator.dao;
 
 import pl.edu.pk.zpi.plagiator.domain.Document;
+import pl.edu.pk.zpi.plagiator.domain.StoredDocument;
 import pl.edu.pk.zpi.plagiator.domain.StoredDocuments;
 
 /**
@@ -10,4 +11,6 @@ import pl.edu.pk.zpi.plagiator.domain.StoredDocuments;
  */
 public interface DocumentsDao extends SavingDao<Document> {
     StoredDocuments findAll();
+
+    StoredDocument findByName(String fileName);
 }

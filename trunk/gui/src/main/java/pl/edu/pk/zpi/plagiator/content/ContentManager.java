@@ -26,15 +26,10 @@ public class ContentManager {
     private Properties properties;
     @Autowired
     private MainFrameFactory mainFrameFactory;
-    @Autowired
-    private StatusBarFactory statusBarFactory;
-    @Autowired
-    private DocumentsDao documentsDao;
 
     public void setContent(JPanel panel) {
         getContentPane().remove(mainFrameFactory.getContentPanel());
         mainFrameFactory.setContentPanel(panel);
-        //statusBarFactory.setText(properties.getProperty("statusBar.default"));
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().revalidate();
         getContentPane().repaint();

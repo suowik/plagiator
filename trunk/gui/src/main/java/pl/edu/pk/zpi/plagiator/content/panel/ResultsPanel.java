@@ -6,6 +6,7 @@ import pl.edu.pk.zpi.plagiator.content.ContentManager;
 import pl.edu.pk.zpi.plagiator.content.ResultsTableModel;
 import pl.edu.pk.zpi.plagiator.dao.ResultDao;
 import pl.edu.pk.zpi.plagiator.domain.ComparisonStatus;
+import pl.edu.pk.zpi.plagiator.util.TableUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,6 +37,7 @@ public class ResultsPanel implements ContentPanel {
         panel.setLayout(new BorderLayout());
         model = new ResultsTableModel(resultDao.findAll());
         JTable table = new JTable(model);
+        TableUtil.setWidthAsPercentages(table,0.40,0.40,0.10,0.10);
         table.setDefaultRenderer(ComparisonStatus.class, new StatusRenderer());
         table.addMouseListener(new MouseAdapter() {
             @Override

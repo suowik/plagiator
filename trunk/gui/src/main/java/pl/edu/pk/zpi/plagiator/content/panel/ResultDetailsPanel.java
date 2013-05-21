@@ -3,6 +3,7 @@ package pl.edu.pk.zpi.plagiator.content.panel;
 import pl.edu.pk.zpi.plagiator.content.ResultDetailsTableModel;
 import pl.edu.pk.zpi.plagiator.core.MatchedTextBlocks;
 import pl.edu.pk.zpi.plagiator.domain.ComparisonResult;
+import pl.edu.pk.zpi.plagiator.util.TableUtil;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -38,6 +39,7 @@ public class ResultDetailsPanel implements ContentPanel {
         panel.add(fileLabelPanel, BorderLayout.NORTH);
         model = new ResultDetailsTableModel(comparisonResult.getComparedFileName(), new ArrayList<MatchedTextBlocks>(comparisonResult.getMatchedTextBlocks()));
         JTable table = new JTable(model);
+        TableUtil.setWidthAsPercentages(table,0.80,0.10,0.10);
         JScrollPane scrollPane = new JScrollPane(table);
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;

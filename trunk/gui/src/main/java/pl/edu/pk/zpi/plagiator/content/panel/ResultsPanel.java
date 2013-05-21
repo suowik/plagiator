@@ -8,8 +8,6 @@ import pl.edu.pk.zpi.plagiator.dao.ResultDao;
 import pl.edu.pk.zpi.plagiator.domain.ComparisonStatus;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -43,8 +41,13 @@ public class ResultsPanel implements ContentPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() == 2) {
-                    JTable target = (JTable)e.getSource();
+                    JTable target = (JTable) e.getSource();
                     int row = target.getSelectedRow();
+                    ComparisonStatus status = (ComparisonStatus) target.getValueAt(row, 3);
+                    if (status.equals(ComparisonStatus.OK)) {
+                        JOptionPane.showMessageDialog(null, "Brak podobieństw", "Status", JOptionPane.INFORMATION_MESSAGE);
+                        return;
+                    }
                     contentManager.setContent(new ResultDetailsPanel(model.getComparisonResult(row)).getContent());
                 }
             }
